@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-student-form',
@@ -7,11 +8,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./student-form.component.css']
 })
 export class StudentFormComponent implements OnInit {
-  public myForm!: FormGroup; // Use the non-null assertion operator to tell TypeScript that myForm is not null
+  public myForm!: FormGroup;
   formData: any[] = [];
   searchTerm: string = '';
   filteredData: any[] = [];
-  constructor(private fb: FormBuilder) { }
+
+  constructor(private fb: FormBuilder, private http: HttpClient) { }
 
   ngOnInit() {
     this.myForm = this.fb.group({
@@ -21,25 +23,49 @@ export class StudentFormComponent implements OnInit {
       phone: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
       gender: ['', Validators.required]
     });
-    this.filteredData = this.formData;
+    this.getAllPersons();
   }
 
-  // Add a null check for myForm in the onSubmit method
+  getAllPersons() {
+    this.http.get<any[]>('https://springrestapi-production.up.railway.app/persons')
+      .subscribe(data => {
+        this.formData = data;
+        this.filteredData = data;
+      });
+  }
+
+  getPerson(rollNo: string) {
+    return this.http.get<any>(`https://springrestapi-production.up.railway.app/persons/${rollNo}`);
+  }
+
+  insertPerson(personData: any) {
+    return this.http.post<any>('https://springrestapi-production.up.railway.app/persons', personData);
+  }
+
+  updatePerson(personData: any) {
+    return this.http.put<any>('https://springrestapi-production.up.railway.app/persons', personData);
+  }
+
+  deletePerson(rollNo: string) {
+    return this.http.delete<any>(`https://springrestapi-production.up.railway.app/persons/${rollNo}`);
+  }
+
   onSubmit() {
-    if (this.myForm) {
-      this.formData.push(this.myForm.value);
-      this.myForm.reset();
+    if (this.myForm.valid) {
+      this.insertPerson(this.myForm.value).subscribe(data => {
+        this.formData.push(data);
+        this.myForm.reset();
+        this.filteredData = this.formData;
+      });
     }
   }
+
   onSearch(value: string) {
     if (value !== '') {
-      this.filteredData = this.formData.filter(data =>
-        data.name.toLowerCase().includes(value.toLowerCase()) ||
-        data.rollNumber.toLowerCase().includes(value.toLowerCase()) ||
-        data.email.toLowerCase().includes(value.toLowerCase()) ||
-        data.phone.toLowerCase().includes(value.toLowerCase()) ||
-        data.gender.toLowerCase().includes(value.toLowerCase())
-      );
+      this.http.get<any[]>(`https://springrestapi-production.up.railway.app/persons?search=${value}`)
+        .subscribe(data => {
+          this.filteredData = data;
+        });
     } else {
       this.filteredData = this.formData;
     }
