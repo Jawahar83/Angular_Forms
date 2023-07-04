@@ -1,0 +1,68 @@
+<form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="name">Name:</label>
+    <input type="text" id="name" formControlName="name">
+    <div *ngIf="myForm.get('name')?.invalid && (myForm.get('name')?.dirty || myForm.get('name')?.touched)">
+      <div *ngIf="myForm.get('name')?.errors?.['required']">Name is required</div>
+    </div>
+  </div>
+  <div>
+    <label for="rollNumber">Roll Number:</label>
+    <input type="text" id="rollNumber" formControlName="rollNumber">
+    <div *ngIf="myForm.get('rollNumber')?.invalid && (myForm.get('rollNumber')?.dirty || myForm.get('rollNumber')?.touched)">
+      <div *ngIf="myForm.get('rollNumber')?.errors?.['required']">Roll Number is required</div>
+      <div *ngIf="myForm.get('rollNumber')?.errors?.['pattern']">Invalid Roll Number format (must be 6 alphanumeric characters)</div>
+    </div>
+  </div>
+  <div>
+    <label for="email">Email:</label>
+    <input type="email" id="email" formControlName="email">
+    <div *ngIf="myForm.get('email')?.invalid && (myForm.get('email')?.dirty || myForm.get('email')?.touched)">
+      <div *ngIf="myForm.get('email')?.errors?.['required']">Email is required</div>
+      <div *ngIf="myForm.get('email')?.errors?.['email']">Invalid email format</div>
+    </div>
+  </div>
+  <div>
+    <label for="phone">Phone:</label>
+    <input type="text" id="phone" formControlName="phone">
+    <div *ngIf="myForm.get('phone')?.invalid && (myForm.get('phone')?.dirty || myForm.get('phone')?.touched)">
+      <div *ngIf="myForm.get('phone')?.errors?.['required']">Phone number is required</div>
+      <div *ngIf="myForm.get('phone')?.errors?.['pattern']">Invalid phone number format (must be 10 digits)</div>
+    </div>
+  </div>
+  <div>
+    <label for="gender">Gender:</label>
+    <select id="gender" formControlName="gender">
+      <option value="">-- Select Gender --</option>
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+      <option value="other">Other</option>
+    </select>
+    <div *ngIf="myForm.get('gender')?.invalid && (myForm.get('gender')?.dirty || myForm.get('gender')?.touched)">
+      <div *ngIf="myForm.get('gender')?.errors?.['required']">Gender is required</div>
+    </div>
+  </div>
+  <button type="submit">Submit</button>
+
+  <br><br><input type="text" #searchInput (input)="onSearch(searchInput.value)" placeholder="Search"><br>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Roll Number</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Gender</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of filteredData">
+        <td>{{ data.name }}</td>
+        <td>{{ data.rollNumber }}</td>
+        <td>{{ data.email }}</td>
+        <td>{{ data.phone }}</td>
+        <td>{{ data.gender }}</td>
+      </tr>
+    </tbody>
+  </table>
+</form>
