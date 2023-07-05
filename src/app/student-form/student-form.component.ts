@@ -18,7 +18,7 @@ export class StudentFormComponent implements OnInit {
   ngOnInit() {
     this.myForm = this.fb.group({
       name: ['', Validators.required],
-      rollNumber: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9]{6}$/)]],
+      rollNumber: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9]{7}$/)]],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
       gender: ['', Validators.required]
@@ -29,8 +29,15 @@ export class StudentFormComponent implements OnInit {
   getAllPersons() {
     this.http.get<any[]>('https://springrestapi-production.up.railway.app/persons')
       .subscribe(data => {
-        this.formData = data;
-        this.filteredData = data;
+        // Map the response data to the expected format
+        this.formData = data.map(item => ({
+          name: item.name,
+          rollNumber: item.rollNumber,
+          email: item.email,
+          phone: item.phone,
+          gender: item.gender
+        }));
+        this.filteredData = this.formData;
       });
   }
 
@@ -53,6 +60,7 @@ export class StudentFormComponent implements OnInit {
   onSubmit() {
     if (this.myForm.valid) {
       this.insertPerson(this.myForm.value).subscribe(data => {
+        // Add the new data to the formData array and update the table data
         this.formData.push(data);
         this.myForm.reset();
         this.filteredData = this.formData;
@@ -64,7 +72,14 @@ export class StudentFormComponent implements OnInit {
     if (value !== '') {
       this.http.get<any[]>(`https://springrestapi-production.up.railway.app/persons?search=${value}`)
         .subscribe(data => {
-          this.filteredData = data;
+          // Map the response data to the expected format and update the table data
+          this.filteredData = data.map(item => ({
+            name: item.name,
+            rollNumber: item.rollNumber,
+            email: item.email,
+            phone: item.phone,
+            gender: item.gender
+          }));
         });
     } else {
       this.filteredData = this.formData;
