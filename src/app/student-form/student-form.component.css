@@ -6,6 +6,11 @@ form {
     margin: 20px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   }
+  input.ng-invalid.ng-touched,
+select.ng-invalid.ng-touched {
+  border: 1px solid red;
+  background-color: #f1e6e6;
+}
   .ng-invalid {
     border-color: #ccc !important;
   }
