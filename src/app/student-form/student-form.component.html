@@ -11,7 +11,7 @@
     <input type="text" id="rollNumber" formControlName="rollNumber">
     <div *ngIf="myForm.get('rollNumber')?.invalid && (myForm.get('rollNumber')?.dirty || myForm.get('rollNumber')?.touched)">
       <div *ngIf="myForm.get('rollNumber')?.errors?.['required']">Roll Number is required</div>
-      <div *ngIf="myForm.get('rollNumber')?.errors?.['pattern']">Invalid Roll Number format (must be 6 alphanumeric characters)</div>
+      <div *ngIf="myForm.get('rollNumber')?.errors?.['pattern']">Invalid Roll Number format (must be 7 alphanumeric characters)</div>
     </div>
   </div>
   <div>

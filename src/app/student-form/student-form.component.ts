@@ -29,7 +29,6 @@ export class StudentFormComponent implements OnInit {
   getAllPersons() {
     this.http.get<any[]>('https://springrestapi-production.up.railway.app/persons')
       .subscribe(data => {
-        // Map the response data to the expected format
         this.formData = data.map(item => ({
           name: item.name,
           rollNumber: item.rollNumber,
@@ -60,7 +59,6 @@ export class StudentFormComponent implements OnInit {
   onSubmit() {
     if (this.myForm.valid) {
       this.insertPerson(this.myForm.value).subscribe(data => {
-        // Add the new data to the formData array and update the table data
         this.formData.push(data);
         this.myForm.reset();
         this.filteredData = this.formData;
@@ -69,18 +67,16 @@ export class StudentFormComponent implements OnInit {
   }
 
   onSearch(value: string) {
-    if (value !== '') {
-      this.http.get<any[]>(`https://springrestapi-production.up.railway.app/persons?search=${value}`)
-        .subscribe(data => {
-          // Map the response data to the expected format and update the table data
-          this.filteredData = data.map(item => ({
-            name: item.name,
-            rollNumber: item.rollNumber,
-            email: item.email,
-            phone: item.phone,
-            gender: item.gender
-          }));
-        });
+    if (value && value.trim() !== '') {
+      this.filteredData = this.formData.filter(item => {
+        return (
+          (item.name && item.name.toLowerCase().includes(value.toLowerCase())) ||
+          (item.rollNumber && item.rollNumber.toLowerCase().includes(value.toLowerCase())) ||
+          (item.email && item.email.toLowerCase().includes(value.toLowerCase())) ||
+          (item.phone && item.phone.toLowerCase().includes(value.toLowerCase())) ||
+          (item.gender && item.gender.toLowerCase().includes(value.toLowerCase()))
+        );
+      });
     } else {
       this.filteredData = this.formData;
     }
