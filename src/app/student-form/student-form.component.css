@@ -1,107 +1,108 @@
-form {
-    background-color: #f2f2f2;
-    border: 1px solid #ccc;
-    padding: 20px;
-    border-radius: 5px;
-    margin: 20px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  }
-  input.ng-invalid.ng-touched,
-select.ng-invalid.ng-touched {
-  border: 1px solid red;
-  background-color: #f1e6e6;
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 50px;
 }
-  .ng-invalid {
-    border-color: #ccc !important;
-  }
-  label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-  
-  input[type="text"],
-  input[type="email"],
-  select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    font-size: 16px;
-  }
-  
-  input[type="text"]:focus,
-  input[type="email"]:focus,
-  select:focus {
-    outline: none;
-    border-color: #4CAF50;
-    box-shadow: 0 0 10px #4CAF50;
-  }
-  
-  input.ng-invalid,
-  select.ng-invalid {
-    border-color: #ff0000;
-  }
-  
-  div.error-message {
-    color: #ff0000;
-    font-size: 14px;
-    margin-top: 5px;
-  }
-  
-  button[type="submit"] {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  button[type="submit"]:hover {
-    background-color: #3e8e41;
-  }
-  .my-table {
-    border-collapse: collapse;
-    width: 100%;
-  }
-  
-  .my-table th, .my-table td {
-    text-align: left;
-    padding: 8px;
-  }
-  
-  .my-table th {
-    background-color: #4CAF50;
-    color: white;
-  }
-  
-  .my-table tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-  table {
-    border-collapse: collapse;
-    width: 100%;
-  }
-  
-  th, td {
-    text-align: left;
-    padding: 8px;
-  }
-  
-  th {
-    background-color: #4CAF50;
-    color: white;
-  }
-  
-  tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
 
-  input[type="text"] {
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f2f2f2;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 50px;
+}
+
+
+button[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button[type="submit"]:hover {
+  background-color: #3e8e41;
+}
+
+.search-input {
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.table-container {
+  width: 80%;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 8px;
+}
+
+th {
+  background-color: #4CAF50;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2
+}
+
+mat-paginator {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.form-group__item {
+  display: flex;
+  flex-direction: column;
+  width: 45%;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  margin-right: 10px;
+}
+
+input[type="text"],
+input[type="email"],
+select {
+  padding: 10px;
+  border-radius: 30px;
+  border: none;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+  margin-left: 10px;
+}

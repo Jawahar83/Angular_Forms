@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-student-form',
@@ -18,7 +19,7 @@ export class StudentFormComponent implements OnInit {
   ngOnInit() {
     this.myForm = this.fb.group({
       name: ['', Validators.required],
-      rollNumber: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9]{7}$/)]],
+      rollNumber: ['', [Validators.required, Validators.pattern(/^[0-9]{7}$/)]],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
       gender: ['', Validators.required]
@@ -80,5 +81,10 @@ export class StudentFormComponent implements OnInit {
     } else {
       this.filteredData = this.formData;
     }
+  }
+  onPageChange(event: PageEvent) {
+    const startIndex = event.pageIndex * event.pageSize;
+    const endIndex = startIndex + event.pageSize;
+    this.filteredData = this.formData.slice(startIndex, endIndex);
   }
 }
