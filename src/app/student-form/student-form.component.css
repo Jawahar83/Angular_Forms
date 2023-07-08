@@ -12,9 +12,10 @@
   align-items: center;
   justify-content: center;
   background-color: #f2f2f2;
-  padding: 20px;
+  padding: 50px;
   border-radius: 10px;
   margin-bottom: 50px;
+  width: 70%;
 }
 
 
@@ -80,14 +81,25 @@ mat-paginator {
 
 .form-group__item {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
   width: 45%;
+  margin-bottom: 20px;
 }
 
 label {
   font-weight: bold;
-  margin-bottom: 5px;
   margin-right: 10px;
+  width: 30%;
+  text-align: right;
+}
+
+input[type="text"] {
+  padding: 10px;
+  border-radius: 30px;
+  border: none;
+  margin-bottom: 10px;
+  width: 70%;
 }
 
 input[type="text"],
