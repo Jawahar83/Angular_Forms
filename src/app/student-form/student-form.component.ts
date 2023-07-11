@@ -19,9 +19,9 @@ export class StudentFormComponent implements OnInit {
   ngOnInit() {
     this.myForm = this.fb.group({
       name: ['', Validators.required],
-      rollNumber: ['', [Validators.required, Validators.pattern(/^[0-9]{7}$/)]],
+      rollNo: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
+      phone: ['', Validators.required],
       gender: ['', Validators.required]
     });
     this.getAllPersons();
@@ -32,7 +32,7 @@ export class StudentFormComponent implements OnInit {
       .subscribe(data => {
         this.formData = data.map(item => ({
           name: item.name,
-          rollNumber: item.rollNumber,
+          rollNumber: item.rollNo,
           email: item.email,
           phone: item.phone,
           gender: item.gender
@@ -44,23 +44,23 @@ export class StudentFormComponent implements OnInit {
   getPerson(rollNo: string) {
     return this.http.get<any>(`https://springrestapi-production.up.railway.app/persons/${rollNo}`);
   }
-
+  
   insertPerson(personData: any) {
-    return this.http.post<any>('https://springrestapi-production.up.railway.app/persons', personData);
+    return this.http.post<any>('https://springrestapi-production.up.railway.app/persons/', personData);
   }
-
+  
   updatePerson(personData: any) {
-    return this.http.put<any>('https://springrestapi-production.up.railway.app/persons', personData);
+    const rollNo = personData.rollNo;
+    return this.http.put<any>(`https://springrestapi-production.up.railway.app/persons/${rollNo}`, personData);
   }
-
+  
   deletePerson(rollNo: string) {
     return this.http.delete<any>(`https://springrestapi-production.up.railway.app/persons/${rollNo}`);
   }
-
   onSubmit() {
     if (this.myForm.valid) {
       this.insertPerson(this.myForm.value).subscribe(data => {
-        this.formData.push(data);
+        this.formData.push(this.myForm.value); // push the form data instead of the response data
         this.myForm.reset();
         this.filteredData = this.formData;
       });
@@ -72,7 +72,7 @@ export class StudentFormComponent implements OnInit {
       this.filteredData = this.formData.filter(item => {
         return (
           (item.name && item.name.toLowerCase().includes(value.toLowerCase())) ||
-          (item.rollNumber && item.rollNumber.toLowerCase().includes(value.toLowerCase())) ||
+          (item.rollNo && item.rollNo.toString().includes(value))||
           (item.email && item.email.toLowerCase().includes(value.toLowerCase())) ||
           (item.phone && item.phone.toLowerCase().includes(value.toLowerCase())) ||
           (item.gender && item.gender.toLowerCase().includes(value.toLowerCase()))
