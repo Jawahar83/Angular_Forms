@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { PageEvent } from '@angular/material/paginator';
 
+
 @Component({
   selector: 'app-student-form',
   templateUrl: './student-form.component.html',
@@ -13,6 +14,8 @@ export class StudentFormComponent implements OnInit {
   formData: any[] = [];
   searchTerm: string = '';
   filteredData: any[] = [];
+  sortColumn: string = '';
+  sortDirection: string = '';
 
   constructor(private fb: FormBuilder, private http: HttpClient) { }
 
@@ -32,7 +35,7 @@ export class StudentFormComponent implements OnInit {
       .subscribe(data => {
         this.formData = data.map(item => ({
           name: item.name,
-          rollNumber: item.rollNo,
+          rollNo: item.rollNo,
           email: item.email,
           phone: item.phone,
           gender: item.gender
@@ -57,6 +60,7 @@ export class StudentFormComponent implements OnInit {
   deletePerson(rollNo: string) {
     return this.http.delete<any>(`https://springrestapi-production.up.railway.app/persons/${rollNo}`);
   }
+
   onSubmit() {
     if (this.myForm.valid) {
       this.insertPerson(this.myForm.value).subscribe(data => {
@@ -82,9 +86,28 @@ export class StudentFormComponent implements OnInit {
       this.filteredData = this.formData;
     }
   }
+
   onPageChange(event: PageEvent) {
     const startIndex = event.pageIndex * event.pageSize;
     const endIndex = startIndex + event.pageSize;
     this.filteredData = this.formData.slice(startIndex, endIndex);
+  }
+
+  onSort(column: string) {
+    if (column === this.sortColumn) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortColumn = column;
+      this.sortDirection = 'asc';
+    }
+    this.filteredData = this.filteredData.sort((a, b) => {
+      const aValue = a[column];
+      const bValue = b[column];
+      if (typeof aValue === 'string' && typeof bValue === 'string') {
+        return this.sortDirection === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+      } else {
+        return this.sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
+      }
+    });
   }
 }

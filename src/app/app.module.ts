@@ -7,13 +7,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatPaginatorModule } from '@angular/material/paginator';
-
+import { OrderByPipe } from './order-by.pipe';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     StudentFormComponent,
+    OrderByPipe
   ],
   imports: [
     BrowserModule,
@@ -22,6 +23,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     HttpClientModule,
     MatPaginatorModule,
     BrowserAnimationsModule
+    
   ],
   providers: [],
   bootstrap: [AppComponent]

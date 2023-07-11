@@ -1,4 +1,3 @@
-
 <div class="container">
   <form [formGroup]="myForm" (ngSubmit)="onSubmit()" class="form-container">
     <div class="form-group">
@@ -11,10 +10,10 @@
       </div>
       <div class="form-group__item">
         <label for="rollNumber">Roll Number:</label>
-        <input type="text" id="rollNumber" formControlName="rollNo">
-        <div *ngIf="myForm.get('rollNumber')?.invalid && (myForm.get('rollNumber')?.dirty || myForm.get('rollNumber')?.touched)" class="error-message">
-          <div *ngIf="myForm.get('rollNumber')?.errors?.['required']">Roll Number is required</div>
-          <div *ngIf="myForm.get('rollNumber')?.errors?.['pattern']">Invalid Roll Number format (must be 7 alphanumeric characters)</div>
+        <input type="text" id="rollNumber" formControlName="rollNo" pattern="^[a-zA-Z0-9]{7}$">
+        <div *ngIf="myForm.get('rollNo')?.invalid && (myForm.get('rollNo')?.dirty || myForm.get('rollNo')?.touched)" class="error-message">
+          <div *ngIf="myForm.get('rollNo')?.errors?.['required']">Roll Number is required</div>
+          <div *ngIf="myForm.get('rollNo')?.errors?.['pattern']">Invalid Roll Number format (must be 7 alphanumeric characters)</div>
         </div>
       </div>
     </div>
@@ -29,7 +28,7 @@
       </div>
       <div class="form-group__item">
         <label for="phone">Phone:</label>
-        <input type="text" id="phone" formControlName="phone">
+        <input type="tel" id="phone" formControlName="phone" pattern="[0-9]{10}">
         <div *ngIf="myForm.get('phone')?.invalid && (myForm.get('phone')?.dirty || myForm.get('phone')?.touched)" class="error-message">
           <div *ngIf="myForm.get('phone')?.errors?.['required']">Phone number is required</div>
           <div *ngIf="myForm.get('phone')?.errors?.['pattern']">Invalid phone number format (must be 10 digits)</div>
@@ -51,24 +50,26 @@
     <button type="submit">Submit</button>
   </form>
   <div class="table-container">
-    <input type="text" #searchInput (input)="onSearch(searchInput.value)" placeholder="Search" class="search-input">
+    <div class="search-row">
+      <input type="text" #searchInput (input)="onSearch(searchInput.value)" placeholder="Search" class="search-input">
+    </div>
     <table>
       <thead>
         <tr>
-          <th class="table-header">Name</th>
-          <th class="table-header">Roll Number</th>
-          <th class="table-header">Email</th>
-          <th class="table-header">Phone</th>
-          <th class="table-header">Gender</th>
+          <th class="table-header" (click)="onSort('name')">Name</th>
+          <th class="table-header" (click)="onSort('rollNo')">Roll Number</th>
+          <th class="table-header" (click)="onSort('email')">Email</th>
+          <th class="table-header" (click)="onSort('phone')">Phone</th>
+          <th class="table-header" (click)="onSort('gender')">Gender</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of filteredData">
+        <tr *ngFor="let data of filteredData | orderBy: sortColumn: sortDirection">
           <td>{{ data.name }}</td>
-          <td>{{ data.rollNumber }}</td>
+          <td>{{ data.rollNo }}</td>
           <td>{{ data.email }}</td>
           <td>{{ data.phone }}</td>
-          <td>{{ data.gender }}</td>
+          <td>{{ data.gender }}</td>    
         </tr>
       </tbody>
     </table>
